@@ -16,8 +16,6 @@ This is an early, read-focused release. More endpoints/tools (orders, cart, etc.
 | `product_reviews` | Customer reviews for a product |
 | `list_category_products` | Products inside a catalog category |
 | `list_collection_products` | Products inside a curated collection |
-| `hot_offers` | Home screen "hot offers" widget |
-| `main_structure` | Home screen layout/structure |
 | `recommendations` | Personalized/related product recommendations |
 | `list_orders` | List the authenticated user's orders (requires a token) |
 

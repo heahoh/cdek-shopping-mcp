@@ -151,28 +151,6 @@ async def list_collection_products(
 
 
 @mcp.tool()
-async def hot_offers(widget: str | None = None, user_history: str | None = None) -> Any:
-    """Get the "hot offers" widget shown on the home screen.
-
-    Args:
-        widget: Specific widget variant to request, if any.
-        user_history: Opaque user-history token used to personalize results.
-    """
-    params = {"widget": widget, "userHistory": user_history}
-    return await _client.request("GET", "/hot-offers", params=params)
-
-
-@mcp.tool()
-async def main_structure(user_history: str | None = None) -> Any:
-    """Get the structure of the app's main/home screen (banners, widgets, etc).
-
-    Args:
-        user_history: Opaque user-history token used to personalize results.
-    """
-    return await _client.request("GET", "/main/structure", params={"userHistory": user_history})
-
-
-@mcp.tool()
 async def recommendations(
     placements: list[str],
     product_id: list[int] | None = None,
