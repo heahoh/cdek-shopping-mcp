@@ -8,6 +8,16 @@ authors = [
     { name = "Nikolay Koniukhov", email = "n.koniukhov@cdek.shopping" }
 ]
 requires-python = ">=3.11"
+keywords = ["mcp", "model-context-protocol", "cdek", "cdek-shopping", "ecommerce", "ai-agents"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 dependencies = [
     "mcp[cli]>=2.0.0",
     "httpx>=0.27",
