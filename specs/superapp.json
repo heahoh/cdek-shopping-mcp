@@ -1,0 +1,1350 @@
+{
+  "schemes": [],
+  "swagger": "2.0",
+  "info": {
+    "description": "API бэкенда шоппинга",
+    "title": "Shopping front controller API",
+    "contact": {
+      "name": "Daria Maslennikova",
+      "email": "d.maslennikova@cdek.ru"
+    },
+    "version": ""
+  },
+  "host": "",
+  "basePath": "",
+  "paths": {
+    "/api/v1/catalogCategories": {
+      "get": {
+        "description": "Разметка с родительскими категориями",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "superapp"
+        ],
+        "summary": "Каталог / Категории / Структура",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Язык",
+            "name": "Accept-Language",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_usecase_category.MainCategories"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogCategories/{parent_id}": {
+      "get": {
+        "description": "Разметка с дочерники категориями и информация по родительской",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "superapp"
+        ],
+        "summary": "Каталог / Категории / Структура",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Язык",
+            "name": "Accept-Language",
+            "in": "header"
+          },
+          {
+            "type": "integer",
+            "default": 0,
+            "description": "ID родительской категории",
+            "name": "parent_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_usecase_category.CategoriesByParentID"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/category/{id}": {
+      "post": {
+        "description": "Получение и фильтрация товаров из указанной категории",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "superapp"
+        ],
+        "summary": "Получение товаров из указанной категории",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Язык",
+            "name": "Accept-Language",
+            "in": "header"
+          },
+          {
+            "type": "integer",
+            "description": "ID категории",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "enum": [
+              "price_asc",
+              "price_desc",
+              "default_sorting",
+              "sale_desc"
+            ],
+            "type": "string",
+            "description": "По какому полю сортировка",
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Номер страницы",
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "По сколько товаров выводить на страницу",
+            "name": "perPage",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_catalog.Response"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/collection/{id}": {
+      "post": {
+        "description": "Получение и фильтрация товаров из указанной подборки (коллекции)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "superapp"
+        ],
+        "summary": "Получение товаров из указанной подборки (коллекции)",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Язык",
+            "name": "Accept-Language",
+            "in": "header"
+          },
+          {
+            "type": "integer",
+            "description": "ID подборки (коллекции)",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "enum": [
+              "price_asc",
+              "price_desc",
+              "default_sorting",
+              "sale_desc"
+            ],
+            "type": "string",
+            "description": "По какому полю сортировка",
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Номер страницы",
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "По сколько товаров выводить на страницу",
+            "name": "perPage",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_catalog.Response"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/hot-offers": {
+      "get": {
+        "description": "Получение виджета горячих предложений с топ-категорий и доп. виджетом",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "superapp"
+        ],
+        "summary": "Виджет горячих предложений",
+        "parameters": [
+          {
+            "type": "string",
+            "example": "|v:171318:542466!171320:1070718!171326:542478:336698!171352:542474!171378:542470:310374!171396:553082|c:171378:1277!171376:542478:542474",
+            "description": "История просмотров и покупок пользователя для формирования персональных рекомендаций",
+            "name": "userHistory",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "MAIN_SHOPPING",
+              "MAIN_SUPPER_APP"
+            ],
+            "type": "string",
+            "example": "MAIN_SHOPPING",
+            "name": "widget",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Widget"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/main/structure": {
+      "get": {
+        "description": "Разметка главного экрана шопинга",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "superapp"
+        ],
+        "summary": "Главный экран / Структура",
+        "parameters": [
+          {
+            "type": "string",
+            "example": "|v:171318:542466!171320:1070718!171326:542478:336698!171352:542474!171378:542470:310374!171396:553082|c:171378:1277!171376:542478:542474",
+            "name": "userHistory",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Widgets"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/order/list": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Получение списка заказов пользователя",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "superapp"
+        ],
+        "summary": "Список заказов",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Язык",
+            "name": "Accept-Language",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_order.ListResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.AuthorizationDto"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/product/{id}": {
+      "get": {
+        "description": "Информация о продукте",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "superapp"
+        ],
+        "summary": "Каталог / Продукт",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID товара",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "example": "|v:171318:542466!171320:1070718!171326:542478:336698!171352:542474!171378:542470:310374!171396:553082|c:171378:1277!171376:542478:542474",
+            "description": "История просмотров и покупок пользователя для формирования персональных рекомендаций",
+            "name": "userHistory",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product.Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.ProductNotFoundDTO"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search": {
+      "get": {
+        "description": "Получение товаров, брендов, категорий из поиска",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "superapp"
+        ],
+        "summary": "Поиск",
+        "parameters": [
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "csv",
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "type": "boolean",
+            "name": "onlyFilters",
+            "in": "query"
+          },
+          {
+            "maximum": 10000,
+            "minimum": 1,
+            "type": "integer",
+            "example": 1,
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer",
+            "example": 25,
+            "name": "perPage",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "example": "Apple смартфон синий",
+            "description": "Поисковый запрос",
+            "name": "q",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "PRICE_ASC",
+              "PRICE_DESC",
+              "DEFAULT"
+            ],
+            "type": "string",
+            "example": "DEFAULT",
+            "name": "sort",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Response"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search/autocomplete": {
+      "get": {
+        "description": "Получение товаров, брендов, категорий из поиска (автокомплит)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "superapp"
+        ],
+        "summary": "Автокомплит для поиска (suggest)",
+        "parameters": [
+          {
+            "type": "string",
+            "example": "Apple смартфон синий",
+            "description": "Поисковый запрос",
+            "name": "q",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Response"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_domain_entities.Category": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer"
+        },
+        "depth": {
+          "type": "integer"
+        },
+        "hasSubcategories": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "image": {
+          "type": "string"
+        },
+        "isColorVariation": {
+          "type": "boolean"
+        },
+        "mobileAPIImage": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parentID": {
+          "type": "integer"
+        },
+        "parentName": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_services_search.Filter": {
+      "type": "object",
+      "properties": {
+        "data": {},
+        "key": {
+          "type": "string",
+          "example": "category"
+        },
+        "title": {
+          "type": "string",
+          "example": "Категории"
+        },
+        "type": {
+          "type": "string",
+          "example": "CATEGORY"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_services_search.SelectedFilters": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter.Pagination": {
+      "type": "object",
+      "properties": {
+        "currentPage": {
+          "type": "integer",
+          "example": 1
+        },
+        "onPage": {
+          "type": "integer",
+          "example": 25
+        },
+        "pages": {
+          "type": "integer",
+          "example": 31
+        },
+        "totalProducts": {
+          "type": "integer",
+          "example": 756
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter.Sort": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "key": {
+          "type": "string",
+          "example": "DEFAULT"
+        },
+        "title": {
+          "type": "string",
+          "example": "По умолчанию"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_catalog.Data": {
+      "type": "object",
+      "properties": {
+        "filters": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_catalog.Filters"
+        },
+        "pagination": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter.Pagination"
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Item"
+          }
+        },
+        "sortBy": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter.Sort"
+          }
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_catalog.Filters": {
+      "type": "object"
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_catalog.Response": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_catalog.Data"
+        },
+        "error": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_order.ItemResponse": {
+      "type": "object",
+      "required": [
+        "orderDetailUrl",
+        "orderNumber",
+        "status",
+        "toCity"
+      ],
+      "properties": {
+        "orderDetailUrl": {
+          "description": "Ссылка для перехода в подробную информацию о заказе",
+          "type": "string",
+          "example": "https://shopping.stage.cdek-shopping.tech/customer/overview#/order/8200-0045?utm_source=superapp&utm_medium=free-cdek&utm_campaign=super-app-tracking-orders-221122"
+        },
+        "orderNumber": {
+          "description": "Номер заказа",
+          "type": "string",
+          "example": "8200-0045"
+        },
+        "status": {
+          "description": "Статус заказа",
+          "allOf": [
+            {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_order.StatusDto"
+            }
+          ]
+        },
+        "toCity": {
+          "description": "Город получения",
+          "type": "string",
+          "example": "Омск"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_order.ListResponse": {
+      "type": "object",
+      "properties": {
+        "note": {
+          "description": "Дополнительная информация для пользователя, если список заказов пуст",
+          "allOf": [
+            {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_order.NoteDto"
+            }
+          ]
+        },
+        "orders": {
+          "description": "Список заказов",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_order.ItemResponse"
+          }
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_order.NoteDto": {
+      "type": "object",
+      "required": [
+        "noteCode"
+      ],
+      "properties": {
+        "message": {
+          "description": "Дополнительное сообщение с текстом",
+          "type": "string",
+          "example": "Заказы из Шопинга видны пользователям авторизованным по телефону"
+        },
+        "noteCode": {
+          "description": "Дополнительная информация о пользователе",
+          "type": "string",
+          "enum": [
+            "AUTHORIZED",
+            "NOT_AUTHORIZED"
+          ]
+        },
+        "title": {
+          "description": "Основной заголовок с текстом",
+          "type": "string",
+          "example": "Войдите в приложение"
+        },
+        "url": {
+          "description": "Ссылка для перехода на СДЭК Шопинг",
+          "type": "string",
+          "example": "https://cdek.shopping/?utm_source=superapp&utm_medium=free-cdek&utm_campaign=super-app-tracking-221122"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_order.StatusDto": {
+      "type": "object",
+      "required": [
+        "statusCode",
+        "statusText"
+      ],
+      "properties": {
+        "statusCode": {
+          "description": "Код статуса",
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "PROCESSING",
+            "HANDLING",
+            "COMPLETED",
+            "CANCELED",
+            "OTHER"
+          ]
+        },
+        "statusText": {
+          "description": "Локализованный статус",
+          "type": "string",
+          "example": "Ждёт оплаты"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product.Response": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "isAvailable": {
+          "type": "boolean"
+        },
+        "url": {
+          "type": "string"
+        },
+        "widgets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product.Widget"
+          }
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product.Widget": {
+      "type": "object",
+      "required": [
+        "data",
+        "type"
+      ],
+      "properties": {
+        "data": {
+          "description": "Данные виджета"
+        },
+        "type": {
+          "description": "Тип виджета",
+          "type": "string",
+          "enum": [
+            "PRODUCT_IMAGES",
+            "PRODUCT_LABELS",
+            "PRODUCT_TITLE",
+            "PRODUCT_PRICE",
+            "PRODUCT_SIZE",
+            "PRODUCT_DELIVERY",
+            "PRODUCT_TEXT"
+          ]
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Brand": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "example": 0
+        },
+        "id": {
+          "type": "integer",
+          "example": 10
+        },
+        "name": {
+          "type": "string",
+          "example": "Apple"
+        },
+        "url": {
+          "type": "string",
+          "example": "api/shopping/v1/search?filter=brands%3AApple&q=Iphone"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Category": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "example": 0
+        },
+        "id": {
+          "type": "integer",
+          "example": 47
+        },
+        "image": {
+          "type": "string",
+          "example": "ikonki-dlya-razvodyashhix/novyi-proekt-9.jpg"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Электроника"
+        },
+        "name": {
+          "type": "string",
+          "example": "Электроника"
+        },
+        "url": {
+          "type": "string",
+          "example": "api/shopping/v1/search?filter=categories%3A47"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Data": {
+      "type": "object",
+      "properties": {
+        "appliedFilters": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_services_search.SelectedFilters"
+        },
+        "brands": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Brand"
+          }
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Category"
+          }
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_services_search.Filter"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter.Pagination"
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Item"
+          }
+        },
+        "query": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Query"
+        },
+        "redirectMobileUrl": {
+          "type": "string"
+        },
+        "redirectUrl": {
+          "type": "string"
+        },
+        "sortBy": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter.Sort"
+          }
+        },
+        "suggestions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Suggestion"
+          }
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Query": {
+      "type": "object",
+      "properties": {
+        "search": {
+          "type": "string",
+          "example": "Iphone"
+        },
+        "url": {
+          "type": "string",
+          "example": "api/shopping/v1/search?q=Iphone"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Response": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Data"
+        },
+        "error": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search.Suggestion": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer"
+        },
+        "suggestion": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_widgets_label.Label": {
+      "type": "object",
+      "required": [
+        "color",
+        "text"
+      ],
+      "properties": {
+        "color": {
+          "description": "Цвет лейбла",
+          "type": "string",
+          "enum": [
+            "BASIC",
+            "INFO",
+            "SUCCESS",
+            "WARNING",
+            "DANGER",
+            "SECONDARY"
+          ]
+        },
+        "text": {
+          "description": "Текст лейбла",
+          "type": "string",
+          "example": "Скидка 13%"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.AuthorizationDto": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "description": "Описание ошибки. Локализованный текст",
+          "type": "string",
+          "example": "Авторизуйтесь, чтобы продолжить"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "description": "Опционален, но желателен для возможности отличать ошибки",
+          "type": "string",
+          "example": "incorrect_request_parameters"
+        },
+        "message": {
+          "description": "Описание ошибки. Локализованный текст",
+          "type": "string",
+          "example": "Некорректные параметры запроса"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.ProductNotFoundDTO": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "example": 404
+        },
+        "message": {
+          "type": "string",
+          "example": "Продукт не найден"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "description": "Описание ошибки. Локализованный текст",
+          "type": "string",
+          "example": "Ошибка обработки запроса"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.BannerLocation": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string",
+          "enum": [
+            "native_mobile_shoppingmain_top",
+            "native_mobile_shoppingmain_bottom"
+          ]
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Category": {
+      "type": "object",
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "id": {
+          "description": "ID категории",
+          "type": "string",
+          "example": "153"
+        },
+        "title": {
+          "description": "Название категории",
+          "type": "string"
+        },
+        "url": {
+          "description": "Универсальная ссылка на элемент",
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Expand": {
+      "type": "object",
+      "required": [
+        "title",
+        "url"
+      ],
+      "properties": {
+        "title": {
+          "description": "Текст",
+          "type": "string",
+          "example": "Все"
+        },
+        "url": {
+          "description": "Ссылка под текстом",
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Item": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "countryFlagSvg": {
+          "description": "Svg изображение флага страны-производителя",
+          "type": "string",
+          "example": "<svg /></svg>"
+        },
+        "id": {
+          "description": "Идентификатор товара",
+          "type": "integer",
+          "example": 15280048
+        },
+        "images": {
+          "description": "Картинки товара",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "items": {
+          "description": "Список товаров в горизонтальном виджете",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Item"
+          }
+        },
+        "labels": {
+          "description": "Лейблы",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_widgets_label.Label"
+          }
+        },
+        "name": {
+          "description": "Название товара",
+          "type": "string",
+          "example": "Apple iPhone 12 Pro Max 128GB"
+        },
+        "oldPrice": {
+          "description": "Старая цена товара",
+          "type": "string",
+          "example": "135 900 ₽"
+        },
+        "price": {
+          "description": "Актуальная цена товара",
+          "type": "string",
+          "example": "118 900 ₽"
+        },
+        "title": {
+          "description": "Заголовок элемента в горизонтальном виджете",
+          "type": "string",
+          "example": "Смартфоны"
+        },
+        "type": {
+          "description": "Тип элемента внутри спискового виджета",
+          "type": "string",
+          "enum": [
+            "PRODUCT",
+            "HORIZONTAL_INSERT",
+            "BANNER"
+          ]
+        },
+        "url": {
+          "description": "Универсальная ссылка на элемент",
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Widget": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "categories": {
+          "description": "Фильтрация по категориям",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Category"
+          }
+        },
+        "data": {
+          "description": "Тип банера",
+          "allOf": [
+            {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.BannerLocation"
+            }
+          ]
+        },
+        "expand": {
+          "description": "Ссылка в правом заголовке виджета",
+          "allOf": [
+            {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Expand"
+            }
+          ]
+        },
+        "items": {
+          "description": "Предзагружаемый список товаров без фильтрации для дефолтного chip",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Item"
+          }
+        },
+        "title": {
+          "description": "Заголовок виджета",
+          "type": "string",
+          "example": "Парфюмерия"
+        },
+        "type": {
+          "description": "Тип виджета",
+          "type": "string",
+          "enum": [
+            "MENU",
+            "BANNER",
+            "PROMO",
+            "HORIZONTAL_LIST"
+          ]
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Widgets": {
+      "type": "object",
+      "required": [
+        "widgets"
+      ],
+      "properties": {
+        "widgets": {
+          "description": "Виджеты",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_mainscreen.Widget"
+          }
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_usecase_category.CategoriesByParentID": {
+      "type": "object",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_domain_entities.Category"
+          }
+        },
+        "sub_category_info": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_domain_entities.Category"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_usecase_category.MainCategories": {
+      "type": "object",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_domain_entities.Category"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BearerAuth": {
+      "description": "JWT token",
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

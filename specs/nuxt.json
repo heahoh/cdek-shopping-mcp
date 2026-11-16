@@ -1,0 +1,1714 @@
+{
+  "schemes": [],
+  "swagger": "2.0",
+  "info": {
+    "description": "API бэкенда шоппинга",
+    "title": "Shopping front controller API",
+    "contact": {
+      "name": "Daria Maslennikova",
+      "email": "d.maslennikova@cdek.ru"
+    },
+    "version": ""
+  },
+  "host": "",
+  "basePath": "",
+  "paths": {
+    "/api/v1/nuxt/product/{id}": {
+      "get": {
+        "description": "Информация о продукте",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "nuxt"
+        ],
+        "summary": "Каталог / Продукт",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID товара",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.ProductNotFoundDTO"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nuxt/product/{id}/reviews": {
+      "get": {
+        "description": "Список отзывов о продукте",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "nuxt"
+        ],
+        "summary": "Каталог / Продукт / Список отзывов",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Язык",
+            "name": "Accept-Language",
+            "in": "header"
+          },
+          {
+            "type": "integer",
+            "default": 0,
+            "description": "ID продукта",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "boolean",
+            "description": "Фильтр: возвращать только отзывы с медиафайлами (фото/видео).\nНеобязательный параметр. Принимает булевы значения (true/false, 1/0).",
+            "name": "hasMedia",
+            "in": "query"
+          },
+          {
+            "type": "boolean",
+            "description": "Фильтр: возвращать только отзывы с текстовым описанием.\nНеобязательный параметр. Принимает булевы значения (true/false, 1/0).",
+            "name": "hasText",
+            "in": "query"
+          },
+          {
+            "maximum": 50000,
+            "minimum": 1,
+            "type": "integer",
+            "default": 1,
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer",
+            "default": 10,
+            "name": "perPage",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "star",
+              "created_at"
+            ],
+            "type": "string",
+            "default": "star",
+            "name": "sort_field",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "type": "string",
+            "default": "desc",
+            "name": "sort_order",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.ProductNotFoundDTO"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nuxt/product/{id}/reviews/permissions": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Возвращает информацию о том, может ли текущий пользователь (из JWT) оставить отзыв и оставлял ли он его ранее.",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "nuxt"
+        ],
+        "summary": "Проверка прав пользователя на оставление отзыва к товару",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_usecase_product_reviews.PermissionResult"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.ProductNotFoundDTO"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nuxt/product/{id}/summary": {
+      "get": {
+        "description": "Отображение блока с продуктом",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "nuxt"
+        ],
+        "summary": "Каталог / Продукт / Отображение блока с продуктом",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 0,
+            "description": "ID продукта",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_summary.Response"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.ProductNotFoundDTO"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nuxt/recommendations": {
+      "get": {
+        "description": "Получение рекомендаций по указанным placements",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "nuxt"
+        ],
+        "summary": "Рекомендации",
+        "parameters": [
+          {
+            "type": "integer",
+            "example": 42,
+            "description": "ID категории",
+            "name": "categoryId",
+            "in": "query"
+          },
+          {
+            "minimum": 1,
+            "type": "integer",
+            "example": 1,
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer",
+            "example": 25,
+            "name": "perPage",
+            "in": "query"
+          },
+          {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "csv",
+            "example": [
+              "main_banner|cart_page"
+            ],
+            "description": "Идентификатор рекомендательного блока или нескольких блоков",
+            "name": "placements",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "csv",
+            "example": [
+              "123|456"
+            ],
+            "description": "ID продуктов",
+            "name": "productId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "example": "77",
+            "description": "ID регионального фида",
+            "name": "regionId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "example": "|v:171318:542466!171320:1070718!171326:542478:336698!171352:542474!171378:542470:310374!171396:553082|c:171378:1277!171376:542478:542474",
+            "description": "История просмотров и покупок пользователя для формирования персональных рекомендаций",
+            "name": "userHistory",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_recs_nuxt.Response"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nuxt/search": {
+      "get": {
+        "description": "Получение товаров, брендов, категорий из поиска",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "nuxt"
+        ],
+        "summary": "Поиск",
+        "parameters": [
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "csv",
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "type": "boolean",
+            "name": "onlyFilters",
+            "in": "query"
+          },
+          {
+            "maximum": 10000,
+            "minimum": 1,
+            "type": "integer",
+            "example": 1,
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer",
+            "example": 25,
+            "name": "perPage",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "example": "Apple смартфон синий",
+            "description": "Поисковый запрос",
+            "name": "q",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "PRICE_ASC",
+              "PRICE_DESC",
+              "DEFAULT"
+            ],
+            "type": "string",
+            "example": "DEFAULT",
+            "name": "sort",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Response"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/nuxt/search/autocomplete": {
+      "get": {
+        "description": "Получение товаров, брендов, категорий из поиска (автокомплит)",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "nuxt"
+        ],
+        "summary": "Автокомплит для поиска (suggest)",
+        "parameters": [
+          {
+            "type": "string",
+            "example": "Apple смартфон синий",
+            "description": "Поисковый запрос",
+            "name": "q",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.AutocompleteResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Attribute": {
+      "type": "object",
+      "properties": {
+        "link": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Brand": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "image": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Breadcrumb": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "image": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Characteristic": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.CustomsDuty": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "price": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.PriceValue"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Delivery": {
+      "type": "object",
+      "properties": {
+        "country": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.DeliveryCountry"
+        },
+        "deliveryMethods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.DeliveryMethod"
+          }
+        },
+        "deliveryPeriod": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.DeliveryPeriod"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.DeliveryCountry": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.DeliveryMethod": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.PriceValue"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.DeliveryPeriod": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Dependencies": {
+      "type": "object",
+      "properties": {
+        "delivery": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Delivery"
+        },
+        "price": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Price"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Discount": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer"
+        },
+        "type": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.DiscountType"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.DiscountType": {
+      "type": "string",
+      "enum": [
+        "percent"
+      ],
+      "x-enum-varnames": [
+        "Percent"
+      ]
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.HTML": {
+      "type": "object",
+      "properties": {
+        "html": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Image": {
+      "type": "object",
+      "properties": {
+        "large": {
+          "type": "string"
+        },
+        "medium": {
+          "type": "string"
+        },
+        "small": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Label": {
+      "type": "object",
+      "properties": {
+        "palette": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Palette"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Option": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.OptionValue"
+          }
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.OptionValue": {
+      "type": "object",
+      "properties": {
+        "dependencies": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Dependencies"
+        },
+        "description": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Palette": {
+      "type": "object",
+      "properties": {
+        "backgroundColor": {
+          "type": "string"
+        },
+        "textColor": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Price": {
+      "type": "object",
+      "properties": {
+        "current": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.PriceValue"
+        },
+        "hint": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Text"
+        },
+        "old": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.PriceValue"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.PriceValue": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Redirect": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "HTTP-код редиректа",
+          "type": "integer",
+          "example": 301
+        },
+        "url": {
+          "description": "Адрес, на который нужно перенаправить",
+          "type": "string",
+          "example": "https://cdek.shopping/p/42/new-slug"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Response": {
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Attribute"
+          }
+        },
+        "available": {
+          "type": "boolean"
+        },
+        "brand": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Brand"
+        },
+        "breadcrumbs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Breadcrumb"
+          }
+        },
+        "category": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Category"
+        },
+        "characteristics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Characteristic"
+          }
+        },
+        "customsDuty": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.CustomsDuty"
+        },
+        "delivery": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Delivery"
+        },
+        "description": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.HTML"
+        },
+        "descriptionShort": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.HTML"
+        },
+        "disclaimer": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Text"
+        },
+        "discount": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Discount"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Image"
+          }
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Label"
+          }
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Option"
+          }
+        },
+        "original": {
+          "type": "boolean"
+        },
+        "price": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Price"
+        },
+        "restrictions": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Restrictions"
+        },
+        "reviewsSummary": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.ReviewsSummary"
+        },
+        "seo": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Seo"
+        },
+        "sizeChart": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.SizeChart"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Source"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Tag"
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "variations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Variation"
+          }
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Restrictions": {
+      "type": "object",
+      "properties": {
+        "hasGeographicalRestrictions": {
+          "description": "Имеет ли товар ограничения по географии",
+          "type": "boolean"
+        },
+        "isAdultOnly": {
+          "description": "Товар для взрослых",
+          "type": "boolean"
+        },
+        "isOnlyCourier": {
+          "description": "Имеет ли товар ограничения по доставке только до дома",
+          "type": "boolean"
+        },
+        "isOnlyPickupPoint": {
+          "description": "Доставка только до пвз",
+          "type": "boolean"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.ReviewsSummary": {
+      "type": "object",
+      "properties": {
+        "avg": {
+          "type": "number"
+        },
+        "total": {
+          "type": "integer"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Seo": {
+      "type": "object",
+      "properties": {
+        "canonicalUrl": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "redirect": {
+          "description": "SEO-редирект со страницы товара, отсутствует, если редиректа нет",
+          "allOf": [
+            {
+              "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Redirect"
+            }
+          ]
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.SizeChart": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Source": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Tag": {
+      "type": "object",
+      "properties": {
+        "image": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Text": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.Variation": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.VariationOption"
+          }
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt.VariationOption": {
+      "type": "object",
+      "properties": {
+        "disabled": {
+          "type": "boolean"
+        },
+        "hexColors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "productId": {
+          "type": "integer"
+        },
+        "selected": {
+          "type": "boolean"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Author": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "ID - Нет для external или анонима",
+          "type": "integer"
+        },
+        "isAnonymous": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Content": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string"
+        },
+        "cons": {
+          "description": "Cons - Недостатки (обязательно при rating < 4, до 1000)",
+          "type": "string"
+        },
+        "originalComment": {
+          "type": "string"
+        },
+        "pros": {
+          "description": "Pros - Достоинства (до 1000 символов)",
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Media": {
+      "type": "object",
+      "properties": {
+        "thumbnailUrl": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.MediaType"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.MediaType": {
+      "type": "string",
+      "enum": [
+        "IMAGE",
+        "VIDEO"
+      ],
+      "x-enum-varnames": [
+        "MediaTypeImage",
+        "MediaTypeVideo"
+      ]
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Pagination": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer"
+        },
+        "perPage": {
+          "type": "integer"
+        },
+        "totalPages": {
+          "type": "integer"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.ProductOption": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Reply": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Response": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Pagination"
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Review"
+          }
+        },
+        "summary": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Summary"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Review": {
+      "type": "object",
+      "properties": {
+        "author": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Author"
+        },
+        "content": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Content"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "media": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Media"
+          }
+        },
+        "productId": {
+          "type": "integer"
+        },
+        "productOptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.ProductOption"
+          }
+        },
+        "rating": {
+          "type": "number"
+        },
+        "reply": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Reply"
+        },
+        "source": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Source"
+        },
+        "type": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.ReviewType"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.ReviewType": {
+      "type": "string",
+      "enum": [
+        "USER",
+        "EXTERNAL",
+        "MODERATED"
+      ],
+      "x-enum-varnames": [
+        "ReviewTypeUser",
+        "ReviewTypeExternal",
+        "ReviewTypeModerated"
+      ]
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Source": {
+      "type": "object",
+      "properties": {
+        "logoUrl": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_reviews.Summary": {
+      "type": "object",
+      "properties": {
+        "rating": {
+          "description": "Rating - Средний балл",
+          "type": "number"
+        },
+        "total": {
+          "description": "Total - Общее количество опубликованных отзывов",
+          "type": "integer"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_summary.Brand": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "image": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_summary.Image": {
+      "type": "object",
+      "properties": {
+        "large": {
+          "type": "string"
+        },
+        "medium": {
+          "type": "string"
+        },
+        "small": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_summary.Response": {
+      "type": "object",
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "brand": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_summary.Brand"
+        },
+        "hasOptions": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "media": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_product_nuxt_summary.Image"
+        },
+        "name": {
+          "type": "string"
+        },
+        "oldPrice": {
+          "type": "number"
+        },
+        "price": {
+          "type": "number"
+        },
+        "priceHint": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_recs_nuxt.Data": {
+      "type": "object",
+      "properties": {
+        "placement": {
+          "type": "string"
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Product"
+          }
+        },
+        "strategyName": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_recs_nuxt.Response": {
+      "type": "object",
+      "properties": {
+        "widgets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_recs_nuxt.Widget"
+          }
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_recs_nuxt.Widget": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_recs_nuxt.Data"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.AutocompleteResponse": {
+      "type": "object",
+      "properties": {
+        "brands": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Brand"
+          }
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Category"
+          }
+        },
+        "suggestions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Suggestion"
+          }
+        },
+        "taps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Badge": {
+      "type": "object",
+      "properties": {
+        "palette": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.BadgePalette"
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.BadgePalette": {
+      "type": "object",
+      "properties": {
+        "backgroundColor": {
+          "type": "string"
+        },
+        "textColor": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Brand": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "image": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 49
+        },
+        "image": {
+          "type": "string",
+          "example": "https://cdek.shopping/storage/novyi-proekt-100.jpg"
+        },
+        "parentCategoryTitle": {
+          "type": "string",
+          "example": "Электроника"
+        },
+        "slug": {
+          "type": "string",
+          "example": "smartfony"
+        },
+        "title": {
+          "type": "string",
+          "example": "Смартфоны"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Country": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "titleFrom": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Discount": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Meta": {
+      "type": "object",
+      "properties": {
+        "isYandexSplitAvailable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Option": {
+      "type": "object",
+      "properties": {
+        "isSelective": {
+          "type": "boolean"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Product": {
+      "type": "object",
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "badges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Badge"
+          }
+        },
+        "brand": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Brand"
+        },
+        "categoryId": {
+          "type": "integer"
+        },
+        "country": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Country"
+        },
+        "description": {
+          "type": "string"
+        },
+        "discount": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Discount"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "meta": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Meta"
+        },
+        "oldPrice": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.ProductPrice"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Option"
+          }
+        },
+        "price": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.ProductPrice"
+        },
+        "restrictions": {
+          "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Restrictions"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.ProductPrice": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Response": {
+      "type": "object",
+      "properties": {
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Product"
+          }
+        },
+        "query": {
+          "type": "string"
+        },
+        "redirectMobileUrl": {
+          "type": "string"
+        },
+        "redirectUrl": {
+          "type": "string"
+        },
+        "sort": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Sort"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "default": 0
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Restrictions": {
+      "type": "object",
+      "properties": {
+        "hasGeographicalRestrictions": {
+          "type": "boolean"
+        },
+        "isAdultOnly": {
+          "type": "boolean"
+        },
+        "isOnlyCourier": {
+          "type": "boolean"
+        },
+        "isOnlyPickupPoint": {
+          "type": "boolean"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Sort": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_converter_search_nuxt.Suggestion": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "nike"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.BusinessLogicDto": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "description": "Опционален, но желателен для возможности отличать ошибки",
+          "type": "string",
+          "example": "incorrect_request_parameters"
+        },
+        "message": {
+          "description": "Описание ошибки. Локализованный текст",
+          "type": "string",
+          "example": "Некорректные параметры запроса"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.ProductNotFoundDTO": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "integer",
+          "example": 404
+        },
+        "message": {
+          "type": "string",
+          "example": "Продукт не найден"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_transport_http_dto_errorresponse.TechDto": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "description": "Описание ошибки. Локализованный текст",
+          "type": "string",
+          "example": "Ошибка обработки запроса"
+        }
+      }
+    },
+    "gitlab_cdek-shopping_tech_cdekmarket_shopping-front-controller_internal_usecase_product_reviews.PermissionResult": {
+      "type": "object",
+      "properties": {
+        "canReview": {
+          "description": "CanReview - Может ли текущий пользователь оставить отзыв",
+          "type": "boolean"
+        },
+        "hasUserReview": {
+          "description": "HasUserReview - Оставлял ли уже отзыв этот пользователь",
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BearerAuth": {
+      "description": "JWT token",
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}
