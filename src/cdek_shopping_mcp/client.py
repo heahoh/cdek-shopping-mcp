@@ -8,6 +8,7 @@ from typing import Any
 import httpx
 
 DEFAULT_BASE_URL = "https://api.cdek.shopping/front-controller/v1"
+APP_NAME = "ecommerce-mcp"
 
 
 class CdekShoppingApiError(RuntimeError):
@@ -60,7 +61,7 @@ class CdekShoppingClient:
                 "environment variable to a valid bearer token.",
             )
 
-        headers = {"Accept-Language": self.language}
+        headers = {"Accept-Language": self.language, "X-App-Name": APP_NAME}
         if self.token:
             headers["Authorization"] = f"Bearer {self.token}"
 
