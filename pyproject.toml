@@ -5,7 +5,7 @@ description = "MCP server for the cdek.shopping storefront API (catalog, search,
 readme = "README.md"
 license = "MIT"
 authors = [
-    { name = "Nikolay Koniukhov", email = "n.koniukhov@cdek.shopping" }
+    { name = "Nikolay Koniukhov", email = "heahoh@gmail.com" }
 ]
 requires-python = ">=3.11"
 keywords = ["mcp", "model-context-protocol", "cdek", "cdek-shopping", "ecommerce", "ai-agents"]
