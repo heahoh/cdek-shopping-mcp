@@ -59,6 +59,15 @@ All configuration is via environment variables, all optional:
 | `CDEK_SHOPPING_BASE_URL` | `https://api.cdek.shopping/front-controller/v1` | API base URL |
 | `CDEK_SHOPPING_TOKEN` | _(none)_ | Bearer token for authenticated endpoints (e.g. `list_orders`) |
 | `CDEK_SHOPPING_LANG` | `ru` | `Accept-Language` header sent on every request |
+| `CDEK_SHOPPING_MAX_RPS` | `5` | Max requests/second enforced by the client |
+
+## Rate limiting
+
+cdek.shopping asked that these endpoints never be called at more than 5
+requests/second. The client throttles every call to this rate regardless of
+how many tools an agent fires concurrently, and the server advertises the
+limit to MCP clients via its `instructions`. Agents should still avoid
+redundant lookups and back off on errors rather than retrying immediately.
 
 ## Development
 

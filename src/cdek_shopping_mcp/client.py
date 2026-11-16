@@ -2,13 +2,38 @@
 
 from __future__ import annotations
 
+import asyncio
 import os
+import time
 from typing import Any
 
 import httpx
 
 DEFAULT_BASE_URL = "https://api.cdek.shopping/front-controller/v1"
 APP_NAME = "ecommerce-mcp"
+DEFAULT_MAX_RPS = 5.0
+
+
+class RateLimiter:
+    """Caps requests to at most `rate` per second, spacing calls evenly.
+
+    cdek.shopping asked that agents never exceed 5 rps against these
+    endpoints. This throttles every call made through the client so
+    the limit holds even if the agent fires several tools concurrently.
+    """
+
+    def __init__(self, rate: float) -> None:
+        self._min_interval = 1.0 / rate
+        self._lock = asyncio.Lock()
+        self._last_call = 0.0
+
+    async def wait(self) -> None:
+        async with self._lock:
+            now = time.monotonic()
+            delay = self._last_call + self._min_interval - now
+            if delay > 0:
+                await asyncio.sleep(delay)
+            self._last_call = time.monotonic()
 
 
 class CdekShoppingApiError(RuntimeError):
@@ -25,6 +50,10 @@ class CdekShoppingClient:
 
     Auth is optional: most endpoints are public. Set CDEK_SHOPPING_TOKEN to
     enable the handful of endpoints that require a bearer token (e.g. orders).
+
+    Requests are throttled to at most `max_rps` per second (default 5, the
+    limit cdek.shopping asked agents to respect) regardless of how many
+    tools the agent calls concurrently.
     """
 
     def __init__(
@@ -33,10 +62,13 @@ class CdekShoppingClient:
         token: str | None = None,
         language: str | None = None,
         timeout: float = 20.0,
+        max_rps: float | None = None,
     ) -> None:
         self.base_url = base_url or os.environ.get("CDEK_SHOPPING_BASE_URL", DEFAULT_BASE_URL)
         self.token = token or os.environ.get("CDEK_SHOPPING_TOKEN")
         self.language = language or os.environ.get("CDEK_SHOPPING_LANG", "ru")
+        rate = max_rps or float(os.environ.get("CDEK_SHOPPING_MAX_RPS", DEFAULT_MAX_RPS))
+        self._rate_limiter = RateLimiter(rate)
         self._client = httpx.AsyncClient(base_url=self.base_url, timeout=timeout)
 
     @property
@@ -67,6 +99,7 @@ class CdekShoppingClient:
 
         clean_params = _drop_none(params or {})
 
+        await self._rate_limiter.wait()
         response = await self._client.request(
             method,
             path,

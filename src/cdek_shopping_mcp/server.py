@@ -3,6 +3,11 @@
 Covers catalog browsing, search, product details/reviews and recommendations.
 Most endpoints are public; order listing requires CDEK_SHOPPING_TOKEN to be set.
 See README.md for the full tool list and ./specs for the raw OpenAPI sources.
+
+Rate limit: cdek.shopping asked that these endpoints never be called at more
+than 5 requests/second. The client enforces this by throttling every call, but
+agents should still avoid firing tool calls in a tight concurrent burst and
+should back off on 429/5xx responses instead of retrying immediately.
 """
 
 from __future__ import annotations
@@ -13,7 +18,15 @@ from mcp.server.mcpserver import MCPServer
 
 from .client import CdekShoppingClient
 
-mcp = MCPServer("cdek-shopping")
+mcp = MCPServer(
+    "cdek-shopping",
+    instructions=(
+        "Tools in this server call the cdek.shopping API. Do not call them at "
+        "more than 5 requests/second combined, even across parallel tool calls: "
+        "space out calls, avoid redundant lookups, and back off on errors "
+        "instead of retrying immediately."
+    ),
+)
 _client = CdekShoppingClient()
 
 
